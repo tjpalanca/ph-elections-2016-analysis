@@ -18,5 +18,5 @@ If you would like to use any content for your own work, I will give permission u
 
 ### Author Information
 
-**Troy James R Palanca**
+**Troy James R Palanca**  
 [Email](contact@tjpalanca.com), [Blog](http://www.tjpalanca.com), [Facebook Page](http://www.facebook.com/tjpalanca.blog), [LinkedIn Profile](http://ph.linkedin.com/in/tjpalanca)
