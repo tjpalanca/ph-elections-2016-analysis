@@ -5,6 +5,7 @@
 
   library(rPython) # Use cfscrape python module to bypass CloudFront DDOS protection
   library(dplyr)
+  library(stringr)
 
 # Setup ---------------------------------------------------------------------------------------
 
@@ -130,8 +131,14 @@
     left_join(province.dt %>% select(region = parentName, province = name)) %>%
     left_join(citymuni.dt %>% select(province = parentName, citymuni = name, url))
 
+  # Get contest results
   contests.ls <- GetContests(result_hierarchy.dt$url)
-  contest_details.dt <- GetContestInfo(contests.ls, 'voting')
-  contest_results.dt <- GetContestInfo(contests.ls, 'result')
 
+  # Parse out contest results
+  contest_details.dt <- GetContestInfo(contests.ls, 'voting') %>%
+    mutate_each(funs = funs(. = as.numeric(str_replace_all(., ",|%", ""))), -ends_with("_name"))
+  contest_results.dt <- GetContestInfo(contests.ls, 'result') %>%
+    mutate(votes = as.numeric(str_replace_all(votes, ",", "")))
+
+  # Output results
   save.image("data/01_citymuni_election_results.RData")
