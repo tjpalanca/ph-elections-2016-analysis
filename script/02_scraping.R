@@ -17,7 +17,9 @@
   python.load('script/01_scraper.py')
   ScrapeURL <- function (url) {
     cat(paste0("Scraping from ", base.url, url, "...\n"))
-    return(python.call('scrape', url = paste0(base.url, url)))
+    result <- try({python.call('scrape', url = paste0(base.url, url))})
+    if (class(result) == 'try-error') return(NULL)
+    return(result)
   }
 
   GetSubRegions <- function(urls) {
@@ -58,6 +60,7 @@
           citymuni_json$contests,
           function(contest) {
             contest_json <- ScrapeURL(contest['url'])
+            if(is.null(contest_json)) return(NULL)
             contest_details <- data.frame(
               citymuni_name = citymuni_json$name,
               contest_name = contest_json$name,
