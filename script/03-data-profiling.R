@@ -79,7 +79,9 @@ results.dt <-
   filter(contest_name %in% c("PRESIDENT PHILIPPINES", "VICE-PRESIDENT PHILIPPINES",
                              "SENATOR PHILIPPINES", "PARTY LIST PHILIPPINES"))
 
+# Save out to relevant directories
 saveRDS(results.dt, file = "data/02_results_per_citymuni.rds")
+saveRDS(results.dt, file = "apps/data/02_results_per_citymuni.rds")
 rm(citymuni.dt, contest_details.dt, contest_results.dt, province.dt, region.dt, result_hierarchy.dt)
 
 
