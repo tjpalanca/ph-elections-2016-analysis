@@ -1,9 +1,10 @@
 # PHILIPPINES 2016 ELECTIONS RESULTS ANALYSIS
-# Data Profiling
+# Data Profiling and Cleaning
 # contact@tjpalanca.com | 2016-05-16
 
 # Libraries -----------------------------------------------------------------------------------
 library(dplyr)
+library(stringr)
 
 # Setup ---------------------------------------------------------------------------------------
 
@@ -51,16 +52,9 @@ results.dt %>%
 
 # Data Preparation - Vote Padding -------------------------------------------------------------
 
-# Load scraped data
-load("data/01_citymuni_election_results.RData")
-
-# Asserting that citymuni_url is a unique identifier
-n_distinct(result_hierarchy.dt$url) == nrow(result_hierarchy.dt)
-
-# Joining result hierarchy with the contest details and results
-results.dt <- result_hierarchy.dt %>%
-  left_join(contest_details.dt, by = c("url" = "citymuni_url")) %>%
-  left_join(contest_results.dt, by = c("url" = "citymuni_url", "contest_name" = "contest_name"))
+# Clean Up Enyes
+results.dt <- results.dt %>%
+  mutate_each(funs = funs(. = str_replace_all(., "\xd1", "N")), citymuni, candidate)
 
 # Calculate recorded values by actual amounts
 results.dt <- results.dt %>%

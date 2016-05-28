@@ -105,11 +105,6 @@ server <- function(input, output) {
           }
         )
       ) %>%
-      hc_legend(
-        layout = 'vertical',
-        align = 'right',
-        floating = FALSE
-      ) %>%
       hc_plotOptions(
         bubble = list(
             maxSize = "3%"
@@ -138,7 +133,7 @@ ui <- fluidPage(
                 uiOutput('selector_candidate')
               )
             ),
-            highchartOutput('chart', height = "600px"),
+            highchartOutput('chart', height = "500px"),
             tags$ul(
               tags$li("Each city/municipality is represented by a circle. The color represents the region to which the city/municipality belongs."),
               tags$li("Hover over each circle to view details about that city/municipality."),
@@ -151,3 +146,7 @@ ui <- fluidPage(
   )
 
 shinyApp(ui, server)
+
+# Deploy --------------------------------------------------------------------------------------
+
+# deployApp(appDir = 'ap')
