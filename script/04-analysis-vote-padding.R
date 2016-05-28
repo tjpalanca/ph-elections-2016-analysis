@@ -146,5 +146,3 @@ ui <- fluidPage(
   )
 
 shinyApp(ui, server)
-
-hc_add_series_densit
