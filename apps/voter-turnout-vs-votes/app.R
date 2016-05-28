@@ -7,7 +7,6 @@ library(dplyr)
 library(highcharter)
 library(htmlwidgets)
 library(shiny)
-library(jsonlite)
 
 # Setup ---------------------------------------------------------------------------------------
 
