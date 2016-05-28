@@ -8,4 +8,7 @@
 - [ ] Exploring relationship of voter turnout and winning votes
   - [ ] Shiny app for exploring the data
   - [ ] Summary statistic to show relative risk
+- [ ] Exploring different aspects
+  - [ ] Vote shaving as in undervoting
+  - [ ] Vote switching as in high variance between spatially correlated precincts
 - [ ] Debunking the "Straight Line" in the VP Elections
