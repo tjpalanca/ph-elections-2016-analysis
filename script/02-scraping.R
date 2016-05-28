@@ -74,7 +74,7 @@ GetContests <- function(urls) {
           if(is.null(contest_json)) return(NULL)
           contest_details <-
             data.frame(
-              citymuni_name     = citymuni_json$name,
+              citymuni_url      = citymuni_url,
               contest_name      = contest_json$name,
               tally_total       = contest_json$stats$regionInfo$rows[[1]][['value']],
               tally_reported    = contest_json$stats$regionInfo$rows[[2]][['value']],
@@ -86,7 +86,7 @@ GetContests <- function(urls) {
             )
           contest_results <-
             data.frame(
-              citymuni_name     = citymuni_json$name,
+              citymuni_url      = citymuni_url,
               contest_name      = contest_json$name,
               candidate         = do.call('c', lapply(contest_json$results, function(x) x[['bName']])),
               votes             = do.call('c', lapply(contest_json$results, function(x) x[['votes']])),
@@ -139,10 +139,19 @@ contests.ls <- GetContests(result_hierarchy.dt$url)
 # Parse out contest results
 contest_details.dt <-
   GetContestInfo(contests.ls, 'voting') %>%
-  mutate_each(funs = funs(. = as.numeric(str_replace_all(., ",|%", ""))), -ends_with("_name"))
+  mutate_each(funs = funs(. = as.numeric(str_replace_all(., ",|%", ""))),
+              -contest_name, -citymuni_url)
 contest_results.dt <-
   GetContestInfo(contests.ls, 'result') %>%
   mutate(votes = as.numeric(str_replace_all(votes, ",", "")))
 
-# Output results
+# Output Results ------------------------------------------------------------------------------
+
+# Remove scraping functions
+rm(GetContests, GetContestInfo, GetContestResults, GetSubRegions, ScrapeURL)
+
+# Remove unused values
+rm(contests.ls, country.url, base.url)
+
+# Save out data
 save.image("data/01_citymuni_election_results.RData")
