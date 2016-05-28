@@ -11,7 +11,11 @@ library(highcharter); library(htmlwidgets)
 
 # Setup ---------------------------------------------------------------------------------------
 results.dt <- readRDS('data/02_results_per_citymuni.rds') %>%
-  mutate(candidate = str_replace(candidate, " \\(.*\\)$", ""))
+  mutate(
+    party = ifelse(contest_name != "PARTY LIST PHILIPPINES",
+                   str_replace_all(str_extract(candidate, " \\(.*\\)$"), "\\(|\\)", ""), NA),
+    candidate = str_replace(candidate, " \\(.*\\)$", "")
+  )
 
 repo.url <- "https://raw.githubusercontent.com/tjpalanca/ph-elections-2016-analysis/master/"
 
@@ -92,13 +96,13 @@ sk.hc <-
     theme = hc_theme_smpl()
   ) %>%
   hc_xAxis(
-    title = list(text = "Excess Kurtosis of Rescaled votes",
+    title = list(text = "Skewness of Rescaled votes",
                  style = list("font-size" = "150%")),
     gridLineWidth = 0,
     tickWidth = 0
   ) %>%
   hc_yAxis(
-    title = list(text = "Skewness of Rescaled votes",
+    title = list(text = "Kurtosis of Rescaled votes",
                  style = list("font-size" = "150%")),
     gridLineWidth = 0,
     lineWidth = 1
@@ -180,20 +184,10 @@ sk.hc <-
 saveWidget(
   sk.hc,
   "04-skewness-kurtosis-chart.html",
-  selfcontained = T,
-  background = "#fafafa"
+  selfcontained = F,
+  background = "#fafafa",
+  libdir = "js"
 )
-
-file.copy(
-  from = '04-skewness-kurtosis-chart.html',
-  to = 'output/04-skewness-kurtosis-chart.html'
-)
-
-file.remove(
-  '04-skewness-kurtosis-chart.html'
-)
-
-
 
 
 
