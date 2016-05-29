@@ -6,7 +6,7 @@ The results of this analysis will be published in [tjpalanca.com](http://www.tjp
 
 ### Licensing
 
-For details on the license and permission requests, please see the [license file](https://github.com/ph-elections-2016-analysis/blob/master/LICENSE.md).
+For details on the license and permission requests, please see the [license file](https://github.com/tjpalanca/ph-elections-2016-analysis/blob/master/LICENSE.md).
 
 ### Author Information
 
