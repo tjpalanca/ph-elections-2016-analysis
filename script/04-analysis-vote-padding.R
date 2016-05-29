@@ -188,7 +188,3 @@ saveWidget(
   background = "#fafafa",
   libdir = "js"
 )
-
-
-
-
