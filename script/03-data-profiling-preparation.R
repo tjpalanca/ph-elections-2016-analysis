@@ -50,6 +50,29 @@ results.dt %>%
 
 # 0.8097527 or 80.97%
 
+# Output municipalities and their transmission status
+results_status.dt <- results.dt %>%
+  group_by(citymuni, province, url) %>%
+  summarise(
+    transmission_status = ifelse(
+      mean(ifelse(is.na(transmission), 0 , transmission)) == 100, "FULL TRANSMISSION",
+      ifelse(mean(ifelse(is.na(transmission), 0 , transmission)) > 0, "PARTIAL TRANSMISSION",
+      "NO TRANSMISSION"
+    ))
+  ) %>%
+  ungroup() %>%
+  mutate(
+    `City / Municipality` = paste0(citymuni, ", ", province),
+    `Transmission Status` = transmission_status
+  ) %>%
+  select(`City / Municipality`, `Transmission Status`)
+
+write.csv(
+  results_status.dt,
+  "output/05-results-transmission-status.txt",
+  row.names = FALSE
+)
+
 # Data Preparation - Vote Padding -------------------------------------------------------------
 
 # Clean Up Enyes
