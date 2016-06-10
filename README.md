@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/tjpalanca/ph-elections-2016-analysis.png?label=ready&title=Ready)](https://waffle.io/tjpalanca/ph-elections-2016-analysis)
 ## PH Election Results 2016
 
 ***This is a work in progress.***
