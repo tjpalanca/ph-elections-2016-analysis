@@ -11,6 +11,24 @@ June 11 2016
 
 A study of the Philippines 2016 elections.
 
+#### Part 1 - Election Fingerprints
+
+Taking from the methodology rolled out by Klimek, Yegorov, Hanel, Thurner (2012)[1], we examine city/municipality level data to determine whether we can detect electoral fraud through vote padding by examining voter turnouts against share of the winning candidate. If fake votes are added to the count, some areas would exhibit an unusually high voter turnout, with a large number of votes going to the candidate favored by the fraud.
+
+Here is an overview for the presidential, vice-presidential, and senatorial race:
+
+<iframe frameborder="0" style="margin-bottom: 40px;" width="100%" height="600px" src="http://tjpalanca.com/figures/20160529-election-fingerprint-explorer/">
+</iframe>
+We can examine many candidates and races at once by taking a look at the distribution of the logarithmically scaled vote count (defined the detailed post) and flagging candidates that stray too far away from normality:
+
+<iframe frameborder="0" src="http://tjpalanca.com/figures/04-skewness-kurtosis-chart.html" frameborder="0" width="100%" height="600px">
+</iframe>
+We also construct a shiny app to explore the results for all national elective positions:
+
+<iframe src="http://shiny.tjpalanca.com/tjpalanca/ph-elections-2016/vote-padding/" frameborder="0" width="100%" height="750px">
+</iframe>
+**The complete analysis is laid out in this [blog post](http://tjpalanca.com/2016/05/on-elections-part-1.html).**
+
 ------------------------------------------------------------------------
 
 ### Publication
@@ -49,3 +67,7 @@ If you would like to use any content for your own work, I will give permission u
 -   [Blog](http://www.tjpalanca.com)
 -   [Facebook Page](http://www.facebook.com/tjpalanca.blog)
 -   [LinkedIn Profile](http://ph.linkedin.com/in/tjpalanca)
+
+------------------------------------------------------------------------
+
+[1] Klimek, Yegorov, Hanel, Thurner (2012). Statistical detection of systematic election irregularities. Proceedings of the National Academy of Sciences of the United States of America 109(41).
