@@ -11,6 +11,8 @@ June 11 2016
 
 A study of the Philippines 2016 elections.
 
+------------------------------------------------------------------------
+
 #### Part 1 - Election Fingerprints
 
 Taking from the methodology rolled out by Klimek, Yegorov, Hanel, Thurner (2012)[1], we examine city/municipality level data to determine whether we can detect electoral fraud through vote padding by examining voter turnouts against share of the winning candidate. If fake votes are added to the count, some areas would exhibit an unusually high voter turnout, with a large number of votes going to the candidate favored by the fraud.
