@@ -16,7 +16,7 @@ country.url <- "data/regions/0.json"
 # Scraping Functions --------------------------------------------------------------------------
 
 # Load Python scraper
-python.load('script/01_scraper.py')
+python.load('script/01-munging/01_scraper.py')
 
 ScrapeURL <- function (url) {
   cat(paste0("Scraping from ", base.url, url, "...\n"))
