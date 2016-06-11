@@ -6,18 +6,24 @@ output: github_document
 ---
 
 [![GitHub release](https://img.shields.io/github/release/tjpalanca/ph-elections-2016-analysis.svg?maxAge=2592000)](https://github.com/tjpalanca/fast-food-wars/) [![GitHub issues](https://img.shields.io/github/issues/tjpalanca/ph-elections-2016-analysis.svg?maxAge=2592000)](https://github.com/tjpalanca/fast-food-wars/issues)
+
+---
+
+### Summary
  
 A study of the Philippines 2016 elections.
 
 ---
 
-### Project Information
-
-#### Publication
+### Publication
 
 The results of this analysis will be published in [tjpalanca.com](http://www.tjpalanca.com), a data blog:
 
-* [Part 1 - Election Fingerprints](http://tjpalanca.com/2016/05/on-elections-part-1.html) - statistical electoral fraud detection via voter turnout and votes for winning candidate.
+* [Part 1 - Election Fingerprints](http://tjpalanca.com/2016/05/on-elections-part-1.html) - statistical electoral fraud detection via voter turnout and votes for winning candidate. [(GMA News Cross Post)](http://www.gmanetwork.com/news/story/568132/scitech/science/on-the-elections-part-1-election-fingerprints?utm_source=GMANews&utm_medium=Facebook&utm_campaign=GMANewsFacebook)
+
+---
+
+### Project Information
 
 #### Licensing
 
