@@ -8,6 +8,7 @@ library(dplyr)
 library(stringr)
 library(rvest)
 library(purrr)
+library(readr)
 
 # Data: Philippines Standard Geographic Code (PSGC) Dataset -----------------------------------
 
@@ -232,3 +233,28 @@ population.dt <-
 
 # Save out
 saveRDS(population.dt, 'data/06-census-2015-processed.rds')
+
+# Data: Poverty Estimates ---------------------------------------------------------------------
+
+# Download file
+download.file(
+  'http://storage.googleapis.com/amt-dgph.appspot.com/uploads/h9KWMWZfeoy0Ztn51bfT/pov_muni.csv',
+  destfile = 'data/07-poverty-citymuni-raw.csv'
+)
+
+# Read in
+poverty.dt <-
+  read_csv(
+    'data/07-poverty-citymuni-raw.csv'
+  ) %>%
+  rename(
+    psgc_code = psgc_muni,
+    pov_year = pov_muni_year,
+    pov_measure = pov_muni_measure,
+    pov_estimate = estimate,
+    pov_std_error = standard_error,
+    pov_coef_var = coefficient_of_variation
+  )
+
+# Save RDS
+saveRDS(poverty.dt, 'data/08-poverty-citymuni-processed.rds')
