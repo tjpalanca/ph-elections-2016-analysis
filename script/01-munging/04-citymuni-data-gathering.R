@@ -7,6 +7,7 @@ library(readxl)
 library(dplyr)
 library(stringr)
 library(rvest)
+library(purrr)
 
 # Data: Philippines Standard Geographic Code (PSGC) Dataset -----------------------------------
 
@@ -145,3 +146,89 @@ rm(muni.tables, city.tables, city_info.dt, muni_info.dt)
 # Save out to disk
 saveRDS(citymuni_info.dt, 'data/05-citymuni-landarea-regvoter-psa.rds')
 
+# Data: Population per Barangay ---------------------------------------------------------------
+
+# Download files
+c( # Taken from the press release
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/CAR_0.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/NCR.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R01.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R02.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R03.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R04A.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R04B.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R05.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R06.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R07.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R08.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R09.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R10.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R11.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/R12.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/Caraga.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/ARMM.xlsx',
+  'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/NIR.xlsx'
+) %>%
+  walk(
+    function(url) {
+      download.file(
+        url = url,
+        destfile =
+          paste0(
+            'data/06-census-2015-raw/',
+            str_replace(url, 'https://psa.gov.ph/sites/default/files/attachments/hsd/pressrelease/', '')
+          )
+      )
+    }
+  )
+
+# Read in files and process them into tidy data
+
+population.dt <-
+  map_df(
+    list.files('data/06-census-2015-raw/'),
+    function(filename) {
+      read_excel(
+        paste0('data/06-census-2015-raw/', filename), skip = 6,
+        col_names = FALSE
+      ) %>%
+        select(
+          name = X1,
+          population = X2
+        ) %>%
+        mutate( # name the levels
+          level =
+            ifelse(
+              is.na(name), NA,
+              ifelse(
+                row_number() == 1, 'Reg',
+                ifelse(
+                  is.na(lag(name)) & is.na(lead(name)), 'Prov',
+                  ifelse(
+                    is.na(lag(name)) & !is.na(lead(name)), 'CityMuni',
+                    'Brgy'
+                  )
+                )
+              )
+            )
+        ) %>%
+        filter(!is.na(name) & !is.na(population)) %>%
+        mutate(region_name = name[level == 'Reg']) %>% # Cascade region name
+        filter(level != 'Reg') %>%
+        mutate(group = cumsum(level == 'Prov')) %>%
+        group_by(group) %>%
+        mutate(province_name = name[level == 'Prov']) %>% # Cascade province name
+        filter(level != 'Prov') %>%
+        ungroup() %>% mutate(group = cumsum(level == 'CityMuni')) %>%
+        group_by(group) %>%
+        mutate(citymuni_name = name[level == 'CityMuni']) %>% # Cascade citymuni name
+        filter(level != 'CityMuni') %>% ungroup() %>%
+        select(
+          region_name, province_name, citymuni_name, barangay_name = name,
+          population
+        )
+    }
+  )
+
+# Save out
+saveRDS(population.dt, 'data/06-census-2015-processed.rds')
