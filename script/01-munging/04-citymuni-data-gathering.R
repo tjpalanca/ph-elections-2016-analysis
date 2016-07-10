@@ -227,6 +227,11 @@ population.dt <-
         select(
           region_name, province_name, citymuni_name, barangay_name = name,
           population
+        ) %>%
+        mutate(
+          region_name = ifelse(region_name == 'AUTONOMOUS REGION IN',
+                               'AUTONOMOUS REGION IN MUSLIM MINDANAO',
+                               region_name) # Manual correction for two-liner region name
         )
     }
   )
@@ -258,3 +263,42 @@ poverty.dt <-
 
 # Save RDS
 saveRDS(poverty.dt, 'data/08-poverty-citymuni-processed.rds')
+
+
+# Data: Competitiveness Index --------------------------------------------------------------------
+
+# Scrape data from website
+
+comp.tbl <-
+  read_html('http://www.competitive.org.ph/cmcindex/pages/rankings/#municipalities') %>%
+  html_table(header = TRUE, fill = TRUE)
+
+colnames(comp.tbl[[2]]) <- c(
+  'rank_overall', 'score_overall',
+  'citymuni_name', 'classification', 'province', 'region',
+  'rank_economic_dynamism', 'score_economic_dynamism',
+  'rank_government_efficiency', 'score_government_efficiency',
+  'rank_infrastructure', 'score_infrastructure'
+)
+
+# Rename columns
+
+colnames(comp.tbl[[5]]) <- c(
+  'rank_overall', 'score_overall',
+  'citymuni_name', 'classification', 'province', 'region',
+  'rank_economic_dynamism', 'score_economic_dynamism',
+  'rank_government_efficiency', 'score_government_efficiency',
+  'rank_infrastructure', 'score_infrastructure'
+)
+
+# Collect city/municipality level data
+
+comp_citymuni.dt <-
+  rbind(
+    comp.tbl[[2]] %>% mutate(citymuni_type = "city"), # All cities
+    comp.tbl[[5]] %>% mutate(citymuni_type = "municipality")# All municipalities
+  ) %>%
+  filter(rank_overall != 'Rank')
+
+# Save out
+saveRDS(comp_citymuni.dt, 'data/09-competitiveness-index-processed.rds')
