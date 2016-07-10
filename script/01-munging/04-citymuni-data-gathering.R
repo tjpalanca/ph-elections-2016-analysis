@@ -302,3 +302,26 @@ comp_citymuni.dt <-
 
 # Save out
 saveRDS(comp_citymuni.dt, 'data/09-competitiveness-index-processed.rds')
+
+# Data: Pantawid Report -----------------------------------------------------------------------
+
+# Download
+pantawid.dt <-
+  read_csv(
+    'http://data.dswd.gov.ph/download/core_programs_and_services/pantawid_pamilyang_pilipino_program/Pantawid_Report_as%20of%20April%202016.csv'
+  )
+
+# Remove irrelevant columns and rename
+pppp_report.dt <-
+  pantawid.dt[, 1:17] %>%
+  select(-starts_with('SET '), -`MCCT(i)`)
+
+colnames(pppp_report.dt) <-
+  c('region', 'province', 'district', 'representative', 'citymuni_name',
+    'total_beneficiaries_201604', 'total_target_beneficiaries_2016', 'total_cash_grants_201604')
+
+# Save Out
+saveRDS(pppp_report.dt, 'data/10-pppp-program-processed.rds')
+
+
+
